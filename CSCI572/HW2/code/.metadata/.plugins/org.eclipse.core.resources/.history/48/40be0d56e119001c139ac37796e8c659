@@ -1,0 +1,240 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
+import edu.uci.ics.crawler4j.crawler.*;
+import edu.uci.ics.crawler4j.fetcher.*;
+import edu.uci.ics.crawler4j.robotstxt.*;
+
+public class Controller {
+	
+	static int numberOfCrawlers = 7;
+	static String newsSiteName = "foxnews";
+	static CrawlData crawlData;
+	
+	
+	public static void main(String[] args) throws Exception {
+		crawlData = new CrawlData();
+		List<Object> allCrawlData = performCrawling(); //feed URL, setConfig, politeness 
+		
+		//loop through items
+		for(Object item : allCrawlData) {
+			//allCrawlData is an object
+			CrawlData data = (CrawlData) item;
+			crawlData.fetchedUrls.addAll(data.fetchedUrls);
+			crawlData.visitedUrls.addAll(data.visitedUrls);
+			crawlData.discoveredUrls.addAll(data.discoveredUrls);
+		}
+		
+		dumpDataIntoCSV();
+		collectStatistics();
+	}
+
+	
+	private static void dumpDataIntoCSV() throws Exception {
+		
+		File newFile = new File("fetch_" + newsSiteName + ".csv");
+		newFile.delete();
+		newFile.createNewFile();
+		BufferedWriter bw = new BufferedWriter(new FileWriter(newFile, true));
+		bw.append("URL,status code\n");
+		
+		for(FetchUrl fetchUrl : crawlData.fetchedUrls){
+			bw.append(fetchUrl.url + "," + fetchUrl.statusCode + "\n");
+		}
+		bw.close();
+		
+		newFile = new File("visit_" + newsSiteName + ".csv");
+		newFile.delete();
+		newFile.createNewFile();
+		bw = new BufferedWriter(new FileWriter(newFile, true));
+		bw.write("URLs successfully downloaded,Size of the downloaded file in Bytes,# of outlinks found,esulting content-type\n");
+		
+		for(VisitUrl visitUrl : crawlData.visitedUrls){
+			bw.append(visitUrl.url + "," + visitUrl.size + "," + visitUrl.noOfOutlinks + "," + visitUrl.contentType + "\n");
+		}
+		bw.close();
+		
+		newFile = new File("urls_" + newsSiteName + ".csv");
+		newFile.delete();
+		newFile.createNewFile();
+		bw = new BufferedWriter(new FileWriter(newFile, true));
+		bw.write("URL,Residence Indicator\n");
+		
+		for(DiscoverUrl discoverUrl : crawlData.discoveredUrls){
+			bw.append(discoverUrl.url + "," + discoverUrl.residenceIndicator + "\n");
+		}
+		bw.close();
+	}
+
+	
+	private static void collectStatistics() throws Exception {
+		
+		int noOfFetchesAttempted = crawlData.fetchedUrls.size();
+		
+		HashMap<Integer, Integer> statusCodes = new HashMap<Integer, Integer>();
+		
+		for(FetchUrl fetchUrl : crawlData.fetchedUrls){
+			if (statusCodes.containsKey(fetchUrl.statusCode)){
+				statusCodes.put(fetchUrl.statusCode, statusCodes.get(fetchUrl.statusCode) + 1);
+			}
+			else{
+				statusCodes.put(fetchUrl.statusCode, 1);
+			}
+		}
+		
+		int noOfFetchesSucceeded = statusCodes.get(200);
+		int noOfFetchesAbortedOrFailed = noOfFetchesAttempted - noOfFetchesSucceeded;
+		
+		int noOfDiscoveredUrls = crawlData.discoveredUrls.size();
+		int noOfUniqueUrlsWithinResidence = 0;
+		HashSet<String> uniqueDiscoveredUrls = new HashSet<String>();
+		
+		for(DiscoverUrl discoverUrl : crawlData.discoveredUrls){
+			if (!uniqueDiscoveredUrls.contains(discoverUrl.url)){
+				if (discoverUrl.residenceIndicator == "OK"){
+					noOfUniqueUrlsWithinResidence ++;
+				}
+				uniqueDiscoveredUrls.add(discoverUrl.url);
+			}
+		}
+		
+		int noOfUniqueUrls = uniqueDiscoveredUrls.size();
+		int noOfUniqueUrlsOutsideResidence = noOfUniqueUrls - noOfUniqueUrlsWithinResidence;
+		
+		int oneKB = 0, tenKB = 0, hundredKB = 0, oneMB = 0, other = 0;
+		HashMap<String, Integer> contentTypes = new HashMap<String, Integer>();
+		
+		for (VisitUrl visitUrl : crawlData.visitedUrls){
+			if (visitUrl.size < 1024){
+				oneKB ++;
+			}
+			else if (visitUrl.size < 10240){
+				tenKB ++;
+			}
+			else if (visitUrl.size < 102400){
+				hundredKB ++;
+			}
+			else if (visitUrl.size < 1024 * 1024){
+				oneMB ++;
+			}
+			else{
+				other ++;
+			}
+			
+			if (contentTypes.containsKey(visitUrl.contentType)){
+				contentTypes.put(visitUrl.contentType, contentTypes.get(visitUrl.contentType) + 1);
+			}
+			else{
+				contentTypes.put(visitUrl.contentType, 1);
+			}
+		}
+		
+		
+		File newFile = new File("CrawlReport_" + newsSiteName + ".txt");
+		newFile.delete();
+		newFile.createNewFile();
+		BufferedWriter bw = new BufferedWriter(new FileWriter(newFile, true));
+		bw.write("Name: Ehsan Hosseinzadeh Khaligh\nUSC ID: 1112811250\n");
+		bw.write("News site crawled: " + newsSiteName +".com\nNumber of threads: " + numberOfCrawlers + "\n\n");
+		
+		bw.write("Fetch Statistics\n================\n");
+		bw.write("# fetches attempted: " + noOfFetchesAttempted + "\n# fetches succeeded: " + noOfFetchesSucceeded +
+					"\n# fetches failed or aborted: " + noOfFetchesAbortedOrFailed + "\n\n");
+		
+		bw.write("Outgoing URLs:\n==============\n");
+		bw.write("Total URLs extracted: " + noOfDiscoveredUrls + "\n# unique URLs extracted: " + noOfUniqueUrls + "\n");
+		bw.write("# unique URLs within News Site: " + noOfUniqueUrlsWithinResidence +
+					"\n# unique URLs outside News Site: " + noOfUniqueUrlsOutsideResidence + "\n\n");
+		
+		bw.write("Status Codes:\n=============\n");
+		bw.write("200 OK: " + statusCodes.get(200) + "\n");
+		
+		bw.write("301 Moved Permanently: " + statusCodes.get(301) + "\n");
+		bw.write("302 Found: " + statusCodes.get(302) + "\n");
+		bw.write("303 See Other: " + statusCodes.get(303) + "\n");
+		bw.write("304 Not Modified: " + statusCodes.get(304) + "\n");
+		bw.write("305 Use Proxy: " + statusCodes.get(305) + "\n");
+		bw.write("307 Temporary Redirect: " + statusCodes.get(307) + "\n");
+		
+		bw.write("400 Bad Request: " + statusCodes.get(400) + "\n");
+		bw.write("401 Unauthorized: " + statusCodes.get(401) + "\n");
+		bw.write("402 Payment Required: " + statusCodes.get(402) + "\n");
+		bw.write("403 Forbidden: " + statusCodes.get(403) + "\n");
+		bw.write("404 Not Found: " + statusCodes.get(404) + "\n");
+		bw.write("405 Method Not Allowed: " + statusCodes.get(405) + "\n");
+		bw.write("406 Not Acceptable: " + statusCodes.get(406) + "\n");
+		bw.write("407 Proxy Authentication Required: " + statusCodes.get(407) + "\n");
+		bw.write("408 Request Timeout: " + statusCodes.get(408) + "\n");
+		bw.write("409 Conflict: " + statusCodes.get(409) + "\n");
+		bw.write("410 Gone: " + statusCodes.get(410) + "\n");
+		bw.write("411 Length Required: " + statusCodes.get(411) + "\n");
+		bw.write("412 Precondition Failed: " + statusCodes.get(412) + "\n");
+		bw.write("413 Request Entity Too Large: " + statusCodes.get(413) + "\n");
+		bw.write("414 Request-URI Too Long: " + statusCodes.get(414) + "\n");
+		bw.write("415 Unsupported Media Type: " + statusCodes.get(415) + "\n");
+		bw.write("416 Requested Range Not Satisfiable: " + statusCodes.get(416) + "\n");
+		bw.write("417 Expectation Failed: " + statusCodes.get(417) + "\n");
+		
+		bw.write("500 Internal Server Error: " + statusCodes.get(500) + "\n");
+		bw.write("501 Not Implemented: " + statusCodes.get(501) + "\n");
+		bw.write("502 Bad Gateway: " + statusCodes.get(502) + "\n");
+		bw.write("503 Service Unavailable: " + statusCodes.get(503) + "\n");
+		bw.write("504 Gateway Timeout: " + statusCodes.get(504) + "\n");
+		bw.write("505 HTTP Version Not Supported: " + statusCodes.get(505) + "\n\n");
+		
+		
+		bw.write("File Sizes:\n===========\n");
+		bw.write("< 1KB: "+ oneKB + "\n");
+		bw.write("1KB ~ <10KB: "+ tenKB + "\n");
+		bw.write("10KB ~ <100KB: "+ hundredKB + "\n");
+		bw.write("100KB ~ <1MB: "+ oneMB + "\n");
+		bw.write(">= 1MB: "+ other + "\n\n");
+		
+		bw.write("Content Types:\n==============\n");
+		
+		for(String type : contentTypes.keySet()){
+			bw.write(type + ": " + contentTypes.get(type) + "\n");
+		}
+		bw.close();
+		
+		for(int key: statusCodes.keySet()){
+			System.out.println(key + " " + statusCodes.get(key));
+		}
+	}
+
+
+	private static List<Object> performCrawling() throws Exception {
+		//vars
+		int maxPagesToFetch = 20000;
+		int maxDepthOfCrawling = 16;
+		int politenessDelay = 100;
+		String crawlStorageFolder = "/Users/Ehsan/Desktop/data/crawl";
+		String newsSiteUrl = "https://www.foxnews.com/";
+		
+		CrawlConfig config = new CrawlConfig();
+		
+		//set configs
+		config.setIncludeBinaryContentInCrawling(true);
+		config.setCrawlStorageFolder(crawlStorageFolder);
+		config.setMaxPagesToFetch(maxPagesToFetch);
+		config.setMaxDepthOfCrawling(maxDepthOfCrawling);
+		config.setPolitenessDelay(politenessDelay);
+		//config.setIncludeHttpsPages(true);
+		//config.setSocketTimeout(2500);
+	
+		
+		PageFetcher pageFetcher = new PageFetcher(config);
+		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
+		CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
+		
+		controller.addSeed(newsSiteUrl);
+		controller.start(MyCrawler.class, numberOfCrawlers);
+		return controller.getCrawlersLocalData();
+	}
+
+}

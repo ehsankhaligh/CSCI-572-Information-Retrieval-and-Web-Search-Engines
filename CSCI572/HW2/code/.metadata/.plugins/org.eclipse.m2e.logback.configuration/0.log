@@ -1,0 +1,14 @@
+2021-09-08 23:36:52,758 [Worker-5: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2021-09-08 23:44:33,859 [Start Help Server] INFO  org.eclipse.jetty.util.log - Logging initialized @476233ms to org.eclipse.jetty.util.log.Slf4jLog
+2021-09-08 23:44:33,944 [Start Help Server] INFO  org.eclipse.jetty.server.Server - jetty-9.4.35.v20201120; built: 2020-11-27T20:36:51.615Z; git: bdc54f03a5e0a7e280fab27f55c3c75ee8da89fb; jvm 15.0.1+9-18
+2021-09-08 23:44:33,958 [Start Help Server] INFO  org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+2021-09-08 23:44:33,958 [Start Help Server] INFO  org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+2021-09-08 23:44:33,959 [Start Help Server] INFO  org.eclipse.jetty.server.session - node0 Scavenging every 660000ms
+2021-09-08 23:44:33,977 [Start Help Server] INFO  o.e.j.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@728b5909{/help,null,AVAILABLE}
+2021-09-08 23:44:33,985 [Start Help Server] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@a66ef5c{HTTP/1.1, (http/1.1)}{127.0.0.1:49636}
+2021-09-08 23:44:33,985 [Start Help Server] INFO  org.eclipse.jetty.server.Server - Started @476360ms
+2021-09-08 23:44:33,985 [Start Help Server] INFO  org.eclipse.jetty.server.session - node0 Scavenging every 660000ms
+2021-09-20 00:01:12,358 [Stop Help Server] INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@a66ef5c{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2021-09-20 00:01:12,361 [Stop Help Server] INFO  org.eclipse.jetty.server.session - node0 Stopped scavenging
+2021-09-20 00:01:12,368 [Stop Help Server] INFO  o.e.j.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@728b5909{/help,null,STOPPED}
+2021-09-20 00:01:49,235 [Worker-1: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.

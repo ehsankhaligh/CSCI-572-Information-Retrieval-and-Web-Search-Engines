@@ -1,0 +1,121 @@
+/usr/lib/hadoop/libexec//hadoop-functions.sh: line 2400: HADOOP_COM.GOOGLE.CLOUD.HADOOP.SERVICES.AGENT.JOB.SHIM.HADOOPRUNCLASSSHIM_USER: invalid variable name
+/usr/lib/hadoop/libexec//hadoop-functions.sh: line 2365: HADOOP_COM.GOOGLE.CLOUD.HADOOP.SERVICES.AGENT.JOB.SHIM.HADOOPRUNCLASSSHIM_USER: invalid variable name
+/usr/lib/hadoop/libexec//hadoop-functions.sh: line 2460: HADOOP_COM.GOOGLE.CLOUD.HADOOP.SERVICES.AGENT.JOB.SHIM.HADOOPRUNCLASSSHIM_OPTS: invalid variable name
+2021-10-20 05:57:01,712 INFO client.RMProxy: Connecting to ResourceManager at cluster-d85f-m/10.138.0.3:8032
+2021-10-20 05:57:01,947 INFO client.AHSProxy: Connecting to Application History server at cluster-d85f-m/10.138.0.3:10200
+2021-10-20 05:57:02,889 WARN mapreduce.JobResourceUploader: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
+2021-10-20 05:57:02,915 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/root/.staging/job_1634529853110_0002
+2021-10-20 05:57:03,535 WARN concurrent.ExecutorHelper: Thread (Thread[GetFileInfo #1,5,main]) interrupted: 
+java.lang.InterruptedException
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:510)
+	at com.google.common.util.concurrent.FluentFuture$TrustedFuture.get(FluentFuture.java:88)
+	at org.apache.hadoop.util.concurrent.ExecutorHelper.logThrowableFromAfterExecute(ExecutorHelper.java:48)
+	at org.apache.hadoop.util.concurrent.HadoopThreadPoolExecutor.afterExecute(HadoopThreadPoolExecutor.java:90)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1157)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+2021-10-20 05:57:03,540 INFO input.FileInputFormat: Total input files to process : 5
+2021-10-20 05:57:03,629 INFO mapreduce.JobSubmitter: number of splits:5
+2021-10-20 05:57:03,796 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1634529853110_0002
+2021-10-20 05:57:03,799 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2021-10-20 05:57:04,044 INFO conf.Configuration: resource-types.xml not found
+2021-10-20 05:57:04,045 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+2021-10-20 05:57:04,151 INFO impl.YarnClientImpl: Submitted application application_1634529853110_0002
+2021-10-20 05:57:04,212 INFO mapreduce.Job: The url to track the job: http://cluster-d85f-m:8088/proxy/application_1634529853110_0002/
+2021-10-20 05:57:04,213 INFO mapreduce.Job: Running job: job_1634529853110_0002
+2021-10-20 05:57:12,317 INFO mapreduce.Job: Job job_1634529853110_0002 running in uber mode : false
+2021-10-20 05:57:12,318 INFO mapreduce.Job:  map 0% reduce 0%
+2021-10-20 05:57:24,421 INFO mapreduce.Job:  map 20% reduce 0%
+2021-10-20 05:57:35,481 INFO mapreduce.Job:  map 47% reduce 0%
+2021-10-20 05:57:36,486 INFO mapreduce.Job:  map 60% reduce 0%
+2021-10-20 05:57:37,491 INFO mapreduce.Job:  map 73% reduce 0%
+2021-10-20 05:58:07,633 INFO mapreduce.Job:  map 78% reduce 0%
+2021-10-20 05:58:08,638 INFO mapreduce.Job:  map 79% reduce 0%
+2021-10-20 05:58:09,643 INFO mapreduce.Job:  map 80% reduce 0%
+2021-10-20 05:58:10,648 INFO mapreduce.Job:  map 83% reduce 0%
+2021-10-20 05:58:12,657 INFO mapreduce.Job:  map 89% reduce 0%
+2021-10-20 05:58:13,662 INFO mapreduce.Job:  map 93% reduce 0%
+2021-10-20 05:58:17,680 INFO mapreduce.Job:  map 99% reduce 0%
+2021-10-20 05:58:18,685 INFO mapreduce.Job:  map 100% reduce 0%
+2021-10-20 05:58:32,752 INFO mapreduce.Job:  map 100% reduce 9%
+2021-10-20 05:58:33,756 INFO mapreduce.Job:  map 100% reduce 18%
+2021-10-20 05:58:34,761 INFO mapreduce.Job:  map 100% reduce 27%
+2021-10-20 05:58:35,765 INFO mapreduce.Job:  map 100% reduce 45%
+2021-10-20 05:58:37,775 INFO mapreduce.Job:  map 100% reduce 55%
+2021-10-20 05:58:38,780 INFO mapreduce.Job:  map 100% reduce 82%
+2021-10-20 05:58:39,785 INFO mapreduce.Job:  map 100% reduce 100%
+2021-10-20 05:58:40,794 INFO mapreduce.Job: Job job_1634529853110_0002 completed successfully
+2021-10-20 05:58:40,882 INFO mapreduce.Job: Counters: 61
+	File System Counters
+		FILE: Number of bytes read=1304729858
+		FILE: Number of bytes written=1983840093
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		GS: Number of bytes read=186979991
+		GS: Number of bytes written=176532646
+		GS: Number of read operations=45652
+		GS: Number of large read operations=0
+		GS: Number of write operations=20647244
+		HDFS: Number of bytes read=855
+		HDFS: Number of bytes written=0
+		HDFS: Number of read operations=5
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=0
+		HDFS: Number of bytes read erasure-coded=0
+	Job Counters 
+		Killed map tasks=3
+		Killed reduce tasks=1
+		Launched map tasks=8
+		Launched reduce tasks=12
+		Rack-local map tasks=8
+		Total time spent by all maps in occupied slots (ms)=979016448
+		Total time spent by all reduces in occupied slots (ms)=536886096
+		Total time spent by all map tasks (ms)=310208
+		Total time spent by all reduce tasks (ms)=170116
+		Total vcore-milliseconds taken by all map tasks=310208
+		Total vcore-milliseconds taken by all reduce tasks=170116
+		Total megabyte-milliseconds taken by all map tasks=979016448
+		Total megabyte-milliseconds taken by all reduce tasks=536886096
+	Map-Reduce Framework
+		Map input records=5
+		Map output records=31158075
+		Map output bytes=613024951
+		Map output materialized bytes=675341431
+		Input split bytes=855
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=5161811
+		Reduce shuffle bytes=675341431
+		Reduce input records=31158075
+		Reduce output records=5161811
+		Spilled Records=91348397
+		Shuffled Maps =55
+		Failed Shuffles=0
+		Merged Map outputs=55
+		GC time elapsed (ms)=42024
+		CPU time spent (ms)=320130
+		Physical memory (bytes) snapshot=15300771840
+		Virtual memory (bytes) snapshot=71133454336
+		Total committed heap usage (bytes)=15306063872
+		Peak Map Physical memory (bytes)=2145972224
+		Peak Map Virtual memory (bytes)=4447129600
+		Peak Reduce Physical memory (bytes)=677355520
+		Peak Reduce Virtual memory (bytes)=4467650560
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=186979991
+	File Output Format Counters 
+		Bytes Written=176532646
+
+
+Job ID job-d41b7b66
+Job UUID 23c161df-b934-43b8-b64c-a1f4b0ebe9cf
+Type Dataproc Job
+Status Succeeded

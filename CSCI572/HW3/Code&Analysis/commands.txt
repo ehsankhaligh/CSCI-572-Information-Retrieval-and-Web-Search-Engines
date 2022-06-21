@@ -1,0 +1,22 @@
+gs://dataproc-staging-us-west1-659936764758-odoj5mcq/JAR/bigramsinvertedindex.jar
+gs://dataproc-staging-us-west1-659936764758-odoj5mcq/google-cloud-dataproc-metainfo/devdata
+gs://dataproc-staging-us-west1-659936764758-odoj5mcq/google-cloud-dataproc-metainfo/devout2
+
+
+gs://dataproc-staging-us-west1-659936764758-odoj5mcq/JAR/InvertedIndexBigrams.jar
+
+hadoop fs -getmerge gs://dataproc-staging-us-west1-659936764758-odoj5mcq/google-cloud-dataproc-metainfo/devoutpart2 ./parttwoout.txt
+hadoop fs -copyFromLocal ./parttwoout.txt
+hadoop fs -cp ./parttwoout.txt gs://dataproc-staging-us-west1-659936764758-odoj5mcq/google-cloud-dataproc-metainfo/devoutpart2/parttwoout.txt
+
+
+hadoop fs -mkdir gs://dataproc-staging-us-west1-659936764758-odoj5mcq/JAR
+hadoop fs -copyFromLocal ./invertedindex.jar
+hadoop fs -cp ./invertedindex.jar gs://dataproc-staging-us-west1-659936764758-odoj5mcq/JAR
+
+
+class: InvertedIndexBigrams
+
+----
+export PATH=${JAVA_HOME}/bin:${PATH}
+export HADOOP_CLASSPATH=${JAVA_HOME}/lib/tools.jar
